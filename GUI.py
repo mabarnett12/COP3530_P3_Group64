@@ -1,13 +1,11 @@
 from tkinter import *
 import time
+import WikiRaceUtil_v1 as util
 
 
 def a1_button_clicked():
     start_time1 = time.time()
-    path_list = ["aman.com", "apple.com", "chase.com", "disney.com", "facebook.com", "getbootstrap.com",
-                 "github.com", "instagram.com", "microsoft.com", "mozilla.org",
-                 "openai.com", "pcbuildinguf.com", "python.org", "reactjs.org", "roblox.com", "samsung.com",
-                 "stackoverflow.com", "twitter.com", "ufl.edu", "weather.com", "youtube.com", "zoom.us"]
+    path_list = util.find_path(begin_page.get(),end_page.get(),1)
     populate_listbox(path_list)
     end_time1 = time.time()
     elapsed_time1 = end_time1 - start_time1
@@ -29,10 +27,7 @@ def a1_button_clicked():
 
 def a2_button_clicked():
     start_time2 = time.time()
-    path_list = ["aman.com", "apple.com", "chase.com", "disney.com", "facebook.com", "getbootstrap.com", "github.com",
-                 "instagram.com", "microsoft.com", "mozilla.org",
-                 "openai.com", "pcbuildinguf.com", "python.org", "reactjs.org", "roblox.com", "samsung.com",
-                 "stackoverflow.com", "twitter.com", "ufl.edu", "weather.com", "youtube.com", "zoom.us"]
+    path_list = util.find_path(begin_page.get(),end_page.get(),2)
     populate_listbox(path_list)
     end_time2 = time.time()
     elapsed_time2 = end_time2 - start_time2
@@ -43,6 +38,7 @@ def a2_button_clicked():
 
 # Function to populate the listbox with the list of path strings
 def populate_listbox(strings):
+    path_listbox.delete(0, END)
     for item in strings:
         path_listbox.insert(END, item)
 
