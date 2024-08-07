@@ -27,6 +27,7 @@ def bidirectional_bfs(start_page, end_page):
     backward_paths = {end_page: [end_page]}
 
     while forward_queue and backward_queue:
+        
         # Forward search step
         if forward_queue:
             current_page, path = forward_queue.pop(0)
@@ -91,10 +92,9 @@ def bidirectional_dfs(start_page, end_page):
         # Forward search step
         if forward_queue:
 
-            #  of popping the first in the list, pop the one with the most number of links
+            # Pops page with largest forward heuristic
             forward_queue.sort(key = lambda x: x[2], reverse = True)
             current_page, path, heuristicf = forward_queue.pop(0)
-            
             
             links =  getlinks(current_page)
             for link in links:
@@ -105,14 +105,16 @@ def bidirectional_dfs(start_page, end_page):
                     forward_queue.append((link, new_path,HeuristicForward(link)))
                     if link in backward_visited:
                         return new_path[:-1] + backward_paths[link][::-1]
-
+                    
+            forward_queue.sort(key = lambda x: x[2], reverse = True)
+            current_page, path, heuristica = forward_queue[0]
+            
         # Backward search step
         if backward_queue:
             
-            # Instead of popping the first in the list, pop the one with the most number of links
+            # Pops page with largest backward heuristic
             backward_queue.sort(key = lambda x: x[2], reverse = True)
             current_page, path, heuristicb = backward_queue.pop(0)   
-            
 
             backlinks =  getbacklinks(current_page)
             for backlink in backlinks:
@@ -123,26 +125,17 @@ def bidirectional_dfs(start_page, end_page):
                     backward_queue.append((backlink, new_path, HeuristicBackward(backlink)))
                     if backlink in forward_visited:
                         return forward_paths[backlink][:-1] + new_path[::-1]
+                    
+            backward_queue.sort(key = lambda x: x[2], reverse = True)
+            current_page, path, heuristicb = backward_queue[0]
 
+    return None  # No path found
 
-    return None  # No path foundound
-
-# Wrapper function to run the async code
+# Wrapper function to run the desired code
 def find_path(start_page, end_page, alg):
     if(alg==1):
         return (bidirectional_bfs(start_page, end_page))
     elif(alg==2):
         return (bidirectional_dfs(start_page, end_page))
 
-# Test Run
-start_page = "Graffito_(archaeology)"
-end_page = "Trumbo_Point"
-path = find_path(start_page, end_page, 1)
 
-print(path)
-
-start_page = "Itinerant poet"
-end_page = "Early medieval European dress"
-path = find_path(start_page, end_page, 2)
-
-print(path)
